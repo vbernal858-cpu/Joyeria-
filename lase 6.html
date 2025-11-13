@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lase | Joyería Elegante</title>
+    <!-- Links a las fuentes y Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #DAA520;
+            --color-secondary: #2C3E50;
+            --color-text-light: #ECF0F1;
+            --color-text-dark: #34495E;
+            --color-background: #1A1A1A;
+            --color-accent: #FFD700;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text-light);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: 30px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Estilos para el menú y el carrito */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: relative; /* Añadido para posicionar los menús desplegables */
+        }
+
+        .menu-icon {
+            font-size: 2em;
+            color: var(--color-primary);
+            cursor: pointer;
+        }
+
+        .cart-icon {
+            font-size: 2em;
+            color: var(--color-primary);
+            cursor: pointer;
+        }
+
+        /* Estilos para el menú desplegable */
+        .menu {
+            position: absolute;
+            top: 50px; /* Ajuste para que aparezca debajo del top-bar */
+            left: 0;
+            background-color: var(--color-secondary);
+            width: 200px;
+            padding: 10px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .menu a {
+            display: block;
+            color: var(--color-text-light);
+            text-decoration: none;
+            padding: 8px 0;
+        }
+
+        .menu a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Estilos para el carrito (simulado) */
+        .cart {
+            position: absolute;
+            top: 50px; /* Ajuste para que aparezca debajo del top-bar */
+            right: 0;
+            background-color: var(--color-secondary);
+            width: 200px;
+            padding: 10px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .cart p {
+            color: var(--color-text-light);
+        }
+
+        .logo {
+            width: auto;
+            height: 70px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .frase-dorada {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-accent);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: var(--color-text-light);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 2px solid var(--color-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--color-accent);
+            color: var(--color-background);
+            border-color: var(--color-accent);
+        }
+
+        .destacados {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .destacados h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-primary);
+            font-size: 2.2em;
+            margin-bottom: 30px;
+        }
+
+        /* Estilos para el carrusel */
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .productos {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: left;
+            gap: 30px;
+            padding: 20px;
+            overflow-x: auto;
+            scroll-snap-type: none;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            cursor: grab;
+        }
+
+        .productos:active {
+            cursor: grabbing;
+        }
+
+        .producto {
+            width: 280px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background-color: var(--color-background);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .producto img {
+            width: 90%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            /* Usar un formato de imagen compatible y optimizado */
+            /* Añade loading="lazy" para carga diferida */
+        }
+
+        .producto:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .producto h3 {
+            color: var(--color-primary);
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .producto p {
+            font-size: 1.1em;
+            color: var(--color-text-light);
+        }
+
+        /* Estilos para los botones de navegación */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .carousel-btn.prev {
+            left: 0;
+        }
+
+        .carousel-btn.next {
+            right: 0;
+        }
+
+        footer {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: 30px 0;
+            border-top: 3px solid var(--color-primary);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .redes a {
+            color: var(--color-primary);
+            margin: 0 10px;
+            font-size: 1.5em;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .redes a:hover {
+            color: var(--color-accent);
+        }
+
+        .hero {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .hero .overlay {
+            position: relative;
+            z-index: 2;
+            padding: 50px 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        /* Ajustes para pantallas más pequeñas */
+        @media (max-width: 100px) {
+            .productos {
+                flex-direction: row;
+                align-items: center;
+                overflow-x: auto;
+            }
+
+            .producto {
+                width: 80%;
+                flex-shrink: 0;
+            }
+
+            .frase-dorada {
+                font-size: 2em;
+            }
+
+            header {
+                padding: 20px 0;
+            }
+        }
+
+        /* Mejora de usabilidad: Contraste para accesibilidad */
+        body {
+            color: var(--color-text-light);
+            /* Asegura suficiente contraste */
+        }
+
+        /*Estilos adicionales para mejorar la responsividad del iframe*/
+        .map-responsive {
+            overflow: hidden;
+            padding-bottom: 56.25%;
+            /* Proporción 16:9 */
+            position: relative;
+            height: 0;
+        }
+
+        .map-responsive iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+        /* Estilo para ajustar el tamaño del logo */
+        .logo-header {
+            width: auto;
+            /* Ajusta el ancho automáticamente */
+            height: 150px;
+            /* Define una altura fija */
+            display: block;
+            margin: 0 auto 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="top-bar">
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+             <!-- Menú desplegable -->
+        <div class="menu" id="menu">
+            <a href="#">Inicio</a>
+            <a href="#">Catálogo</a>
+            <a href="#">Nosotros</a>
+            <a href="#">Contacto</a>
+        </div>
+
+        <!-- Carrito (simulado) -->
+        <div class="cart" id="cart">
+            <p>No hay productos en el carrito.</p>
+        </div>
+        </div>
+
+
+        <div class="overlay">
+            <img src="lase.jpg" alt="Logo Lase" class="logo-header">
+            <h1 class="frase-dorada">BIENVENIDO A LASE</h1>
+            <p>Joyas que cuentan tu historia</p>
+            <a href="catalogo.html" class="btn">Ver catálogo</a>
+        </div>
+    </header>
+
+    <section class="destacados">
+        <h2>Productos destacados</h2>
+        <div class="carousel-container">
+            <div class="productos carousel">
+                <div class="producto">
+                    <img src="collar1.jpg" loading="lazy" alt="Collar brillante">
+                    <h3>Collar Cristal Aurora</h3>
+                    <p>$1,200 MXN</p>
+                </div>
+                <div class="producto">
+                    <img src="anillo1.jpg" loading="lazy" alt="Anillo elegante">
+                    <h3>Anillo Estrella Dorada</h3>
+                    <p>$950 MXN</p>
+                </div>
+                <div class="producto">
+                    <img src="aretes1.jpg" loading="lazy" alt="Aretes">
+                    <h3>Aretes Luz de Luna</h3>
+                    <p>$780 MXN</p>
+                </div>
+                <div class="producto">
+                    <img src="collar2.jpg" loading="lazy" alt="Collar brillante">
+                    <h3>Collar Sol Radiante</h3>
+                    <p>$1,500 MXN</p>
+                </div>
+                <div class="producto">
+                    <img src="anillo2.jpg" loading="lazy" alt="Anillo elegante">
+                    <h3>Anillo Corazón Eterno</h3>
+                    <p>$1,100 MXN</p>
+                </div>
+                <div class="producto">
+                    <img src="aretes2.jpg" loading="lazy" alt="Aretes">
+                    <h3>Aretes Lágrima de Ángel</h3>
+                    <p>$920 MXN</p>
+                </div>
+                <div class="producto">
+                    <img src="dije1.jpg" loading="lazy" alt="Dije">
+                    <h3>Dije Esmeralda Mística</h3>
+                    <p>$850 MXN</p>
+                </div>
+                <div class="producto">
+                    <img src="pulsera1.jpg" loading="lazy" alt="Pulsera">
+                    <h3>Pulsera Destellos de Plata</h3>
+                    <p>$980 MXN</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="text-align:center; margin: 40px 0;">
+        <h2 style="color:#b8860b;">Encuéntranos aquí</h2>
+        <!-- Iframe responsivo -->
+        <div class="map-responsive">
+           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.148979974182!2d-99.2751089!3d19.3594791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d201581e951063%3A0x499727e789a19377!2sProl.%20P.%C2%BA%20de%20la%20Reforma%201235!5e0!3m2!1ses-419!2smx!4v1737294499999!5m2!1ses-419!2smx"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Lase Joyería | 100% Hecho en Mexico</p>
+        <div class="redes">
+            <!-- Añadí los links de redes sociales funcionales -->
+            <a href="https://www.facebook.com/profile.php?id=61582142302985"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/lasejoyas"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/525525179994"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://maps.app.goo.gl/HTsHNUPHz1PW1Qqf9"><i class="fas fa-map-marker-alt"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        const carousel = document.querySelector('.productos');
+        let isDragging = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            isDragging = false;
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 1.5; // Ajusta la velocidad de desplazamiento
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        function scrollCarousel(direction) {
+            const scrollAmount = carousel.offsetWidth * 0.8;
+            const currentScroll = carousel.scrollLeft;
+            const newScroll = currentScroll + direction * scrollAmount;
+
+            carousel.scrollTo({
+                left: newScroll,
+                behavior: 'smooth'
+            });
+        }
+
+        // Funcionalidad para el menú desplegable
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            if (menu.style.display === "none") {
+                menu.style.display = "block";
+            } else {
+                menu.style.display = "none";
+            }
+        }
+
+        // Funcionalidad para el carrito (simulado)
+        function toggleCart() {
+            var cart = document.getElementById("cart");
+            if (cart.style.display === "none") {
+                cart.style.display = "block";
+            } else {
+                cart.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+           
+
+        
+
+
